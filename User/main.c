@@ -89,14 +89,14 @@ main()
   enableInterrupts();
 
   
-  GPIO_ResetBits(GPIOB, GPIO_Pin_3);
-
+  GPIO_ResetBits(GPIOB, GPIO_Pin_6);
+  delay(3000);
   while(1)
   {
-    GPIO_SetBits(GPIOB, GPIO_Pin_3);
-    delay(10800000);
-    GPIO_ResetBits(GPIOB, GPIO_Pin_3); 
-    delay(1800000);
+    GPIO_SetBits(GPIOB, GPIO_Pin_6); //test hardreset  
+    delay(20000);  // selisih 117 seconds
+    GPIO_ResetBits(GPIOB, GPIO_Pin_6); 
+    delay(10000); 
 
 
     // switch(u8_button)
