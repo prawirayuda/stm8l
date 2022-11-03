@@ -30,6 +30,9 @@
     <file>
       <name>$PROJ_DIR$\..\Libraries\src\stm8l10x_tim2.c</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libraries\src\stm8l10x_usart.c</name>
+    </file>
   </group>
   <group>
     <name>User</name>

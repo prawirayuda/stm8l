@@ -1,4 +1,4 @@
-"D:\tm88\STM8\main_program\Libraries\src\stm8l10x_tim2.c"
+"D:\tm88\STM8\main_program\Libraries\src\stm8l10x_usart.c"
 -std=c99
 -ferror-limit=100
 -I

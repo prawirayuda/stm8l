@@ -27,6 +27,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8l10x_it.h"
+//#include "stm8l101_eval.h"
 #include "stdio.h"
 
 /* Private typedef -----------------------------------------------------------*/
@@ -37,7 +38,8 @@
 /* Private macro -------------------------------------------------------------*/
 #define countof(a)   (sizeof(a) / sizeof(*(a)))
 /* Private variables ---------------------------------------------------------*/
-uint8_t TxBuffer[] = "\n\rHyperTerminal\n\r";
+uint8_t TxBuffer[] = "\n\rHyperTerminal Interrupt: USART-Hyperterminal communication using Interrupt\n\r";
+
 uint8_t RxBuffer[RxBufferSize];
 uint8_t NbrOfDataToTransfer = TxBufferSize;
 uint8_t NbrOfDataToRead = RxBufferSize;
@@ -46,7 +48,6 @@ uint16_t RxCounter = 0;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-extern volatile uint32_t u16_counter_ms;
 
 
 /* Public functions ----------------------------------------------------------*/
@@ -240,8 +241,9 @@ INTERRUPT_HANDLER(COMP_IRQHandler, 18)
   */
 INTERRUPT_HANDLER(TIM2_UPD_OVF_TRG_BRK_IRQHandler, 19)
 {
-  TIM2_ClearFlag(TIM2_FLAG_Update);
-  ++u16_counter_ms;
+    /* In order to detect unexpected events during development,
+       it is recommended to set a breakpoint on the following instruction.
+    */
 }
 
 /**
@@ -310,12 +312,17 @@ INTERRUPT_HANDLER(SPI_IRQHandler, 26)
   */
 INTERRUPT_HANDLER(USART_TX_IRQHandler, 27)
 {
-  // USART_SendData8(TxBuffer[TxCounter++]);
+//  STM_EVAL_LEDInit(LED2);
+  
+  /* Write one byte to the transmit data register */
+  USART_SendData8(TxBuffer[TxCounter++]);
 
-  // if (TxCounter == NbrOfDataToTransfer)
-  // {
-  //   USART_ITConfig(USART_IT_TXE, DISABLE);
-  // }
+  if (TxCounter == NbrOfDataToTransfer)
+  {
+  //  STM_EVAL_LEDToggle(LED2);
+    /* Disable the USART Transmit interrupt */
+    USART_ITConfig(USART_IT_TXE, DISABLE);
+  }
 }
 
 /**
@@ -324,28 +331,20 @@ INTERRUPT_HANDLER(USART_TX_IRQHandler, 27)
   * @retval None
   */
 INTERRUPT_HANDLER(USART_RX_IRQHandler, 28)
-{  
-
-  
+{ 
   /* Read one byte from the receive data register */
-  //RxBuffer[RxCounter++] = (uint8_t) (USART_ReceiveData8() & 0x7F);
-
+  RxBuffer[RxCounter++] = (uint8_t) (USART_ReceiveData8() & 0x7F);
   uint8_t temp;
   temp = (USART_ReceiveData8() & 0x7F);
   USART_SendData8(temp);
 
 
-
-   if (temp > 1)
-   {
-     /* Disable the USART Receive interrupt */
-      GPIO_ResetBits(GPIOB, GPIO_Pin_7);
-      // USART_ITConfig(USART_IT_RXNE, DISABLE);
-   }
-   else 
-   {
-    GPIO_SetBits(GPIOB, GPIO_Pin_7);
-   }
+  // if (RxCounter == NbrOfDataToRead)
+  // {
+  //   STM_EVAL_LEDToggle(LED3);
+  //   /* Disable the USART Receive interrupt */
+  //    USART_ITConfig(USART_IT_RXNE, DISABLE);
+  // }
 }
 
 /**

@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=1271634255
+Checksum=113839752
 [CodeCoverage]
 Enabled=_ 0
 [CallStack]
@@ -56,15 +56,15 @@ Enabled=0
 ShowSource=1
 [Simulator]
 Freq=16000000
-[Log file]
-LoggingEnabled=_ 0
-LogFile=_ ""
-Category=_ 0
 [SfrWindow]
 Show=1 1
 Sort=4 0
 [Breakpoints]
 Count=0
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
 [Aliases]
 Count=0
 SuppressDialog=0
